@@ -18,6 +18,6 @@ class DashboardSettingController extends Controller
 
     public function account()
     {
-        return view('pages.dashboard-settings');
+        return view('pages.dashboard-account');
     }
 }
