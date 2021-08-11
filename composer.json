@@ -16,7 +16,8 @@
         "laravel/framework": "^7.29",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.4",
-        "sentry/sentry-laravel": "^2.8"
+        "sentry/sentry-laravel": "^2.8",
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

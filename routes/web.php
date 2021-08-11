@@ -36,4 +36,11 @@ Route::get('/dashboard/transactions/{id}', 'DashboardTransactionController@detai
 Route::get('/dashboard/settings', 'DashboardSettingController@store')->name('dashboard-settings');
 Route::get('/dashboard/account', 'DashboardSettingController@account')->name('dashboard-account');
 
+Route::prefix('admin') // ini untuk rout nya, jadi setiap yg manggil '/admin' di url lari kesini.
+    ->namespace('Admin') // ini untuk nama folder untuk manggil controller karena ada di folder Admin.
+    // ->middleware('auth', 'admin')
+    ->group(function () {
+        Route::get('/', 'DashboardController@index')->name('admin-dashboard');
+    });
+
 Auth::routes();
