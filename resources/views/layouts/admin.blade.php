@@ -10,6 +10,7 @@
     @stack('prepend-style')
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link href="/style/main.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css"/>
     @stack('addon-style')
 
 </head>
@@ -28,9 +29,9 @@
                 >Dashboard</a
                 >
                 <a
-                href="{{ route('dashboard-products') }}"
-                class="list-group-item list-group-item-action {{ (request()->is('admin/dashboard/products*')) ? 'active' : '' }}"
-                >Products</a
+                href="{{ route('category.index') }}"
+                class="list-group-item list-group-item-action {{ (request()->is('admin/category*')) ? 'active' : '' }}"
+                >Categories</a
                 >
                 <a
                 href="#"
@@ -40,7 +41,7 @@
                 <a
                 href="#"
                 class="list-group-item list-group-item-action"
-                >Categories</a
+                >Products</a
                 >
                 <a
                 href="{{ route('dashboard-transactions') }}"
@@ -144,9 +145,10 @@
     @stack('prepens-script')
 
      <!-- Bootstrap core JavaScript -->
-     <script src="/vendor/jquery/jquery.slim.min.js"></script>
+     <script src="/vendor/jquery/jquery.min.js"></script>
      <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
      <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
      <script>
        AOS.init();
      </script>
