@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Admin User Page
+    Admin Product Page
 @endsection
 @section('content')
     <div
@@ -12,7 +12,7 @@
             <div class="dashboard-heading">
             <h2 class="dashboard-title">Dashboard Admin</h2>
             <p class="dashboard-subtitle">
-                Edit User
+                Edit Product
             </p>
             </div>
             <div class="dashboard-content">
@@ -29,37 +29,48 @@
                         @endif
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ route('user.update', $item->id) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('product.update', $item->id) }}" method="POST" enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="">Nama User</label>
-                                            <input type="text" class="form-control" name="name" value="{{ $item->name }}" required>
+                                            <label for="">Nama Produk</label>
+                                            <input type="text" class="form-control" value="{{ $item->name }}" name="name" required>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="">Email User</label>
-                                            <input type="email" class="form-control" name="email" value="{{ $item->email }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="">Password</label>
-                                            <input type="password" class="form-control" name="password">
-                                            <small class="text-danger"><i>Kosongkasn jika tidak ingin mengubah password</i></small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="">Roles</label>
-                                            <select class="form-control" name="roles" required>
-                                                <option value="{{ $item->roles }}" selected>Tidak Ganti Roles</option>
-                                                <option value="ADMIN">Admin</option>
-                                                <option value="USER">User</option>
+                                            <label for="">Pemilik Produk</label>
+                                            <select class="form-control" name="users_id" required>
+                                                <option value="{{ $item->users_id }}">{{ $item->users->name }}</option>
+                                                @foreach ($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                @endforeach
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Kategori Produk</label>
+                                            <select class="form-control" name="categories_id" required>
+                                                <option value="{{ $item->categories_id }}">{{ $item->categories->name }}</option>
+                                                @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Harga Produk</label>
+                                            <input type="number" class="form-control" value="{{ $item->price }}" name="price" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="">Deskirpsi Produk</label>
+                                            <textarea class="form-control" name="description" id="editor" required>{!! $item->description !!}</textarea>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -79,3 +90,11 @@
     </div>
     <!-- /#page-content-wrapper -->
 @endsection
+
+@push('addon-script')
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+<script>
+    CKEDITOR.replace( 'editor' );
+</script>
+@endpush
