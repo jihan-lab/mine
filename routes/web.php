@@ -42,6 +42,7 @@ Route::prefix('admin') // ini untuk rout nya, jadi setiap yg manggil '/admin' di
     ->group(function () {
         Route::get('/', 'DashboardController@index')->name('admin-dashboard');
         Route::resource('category', 'CategoryController');
+        Route::resource('user', 'UserController');
     });
 
 Auth::routes();

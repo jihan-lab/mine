@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Admin Category Page
+    Admin User Page
 @endsection
 @section('content')
     <div
@@ -12,7 +12,7 @@
             <div class="dashboard-heading">
             <h2 class="dashboard-title">Dashboard Admin</h2>
             <p class="dashboard-subtitle">
-                List of Category
+                List of User
             </p>
             </div>
             <div class="dashboard-content">
@@ -20,15 +20,15 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <a href="{{ route('category.create') }}" class="btn btn-primary mb-3">Tambah Kategori Baru</a>
+                                <a href="{{ route('user.create') }}" class="btn btn-primary mb-3">Tambah Pengguna Baru</a>
                                 <div class="table-responsive">
                                     <table class="table table-hover scroll-horizontal-vertical w-100" id="crudTable">
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Nama</th>
-                                                <th>Photo</th>
-                                                <th>Slug</th>
+                                                <th>Email</th>
+                                                <th>Roles</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -59,8 +59,8 @@
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'name', name: 'name' },
-                { data: 'photo', name: 'photo' },
-                { data: 'slug', name: 'slug' },
+                { data: 'email', name: 'email' },
+                { data: 'roles', name: 'roles' },
                 {
                     data: 'action',
                     name: 'action',

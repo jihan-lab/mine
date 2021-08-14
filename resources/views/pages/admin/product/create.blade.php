@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('title')
-    Admin Category Page
+    Admin User Page
 @endsection
 @section('content')
     <div
@@ -12,7 +12,7 @@
             <div class="dashboard-heading">
             <h2 class="dashboard-title">Dashboard Admin</h2>
             <p class="dashboard-subtitle">
-                Create a Category
+                Create a New User
             </p>
             </div>
             <div class="dashboard-content">
@@ -29,19 +29,34 @@
                         @endif
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ route('category.store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="">Nama Kategori</label>
+                                                <label for="">Nama User</label>
                                                 <input type="text" class="form-control" name="name" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="">Gambar Kategori</label>
-                                                <input type="file" class="form-control" name="photo" required>
+                                                <label for="">Email User</label>
+                                                <input type="email" class="form-control" name="email" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="">Password</label>
+                                                <input type="password" class="form-control" name="password" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="">Roles</label>
+                                                <select class="form-control" name="roles" required>
+                                                    <option value="ADMIN">Admin</option>
+                                                    <option value="USER">User</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -61,4 +76,3 @@
     </div>
     <!-- /#page-content-wrapper -->
 @endsection
-
