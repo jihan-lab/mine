@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
 <div class="page-content page-auth" id="register">
@@ -10,18 +10,43 @@
               Memulai untuk jual beli <br />
               dengan cara terbaru
             </h2>
-            <form class="mt-3">
+            <form method="POST" action="{{ route('register') }}" class="mt-3">
+            @csrf
               <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" class="form-control is-valid" aria-describedby="nameHelp" v-model="name" autofocus />
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" v-model="name" aria-describedby="nameHelp" autofocus>
+                @error('name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               <div class="form-group">
-                <label>Email</label>
-                <input type="email" class="form-control is-invalid" aria-describedby="emailHelp" v-model="email" />
+                <label>Email Address</label>
+                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" :class="{ 'is-invalid' : this.email_unavailable }" name="email" value="{{ old('email') }}" required autocomplete="email" aria-describedby="emailHelp" v-model="email" @change="checkForEmailAvailability()">
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               <div class="form-group">
                 <label>Password</label>
-                <input type="password" class="form-control" />
+                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              </div>
+              <div class="form-group">
+                <label>Password Confirmation</label>
+                <input id="password-confirm" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
+                @error('password_confirmation')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               <div class="form-group">
                 <label>Store</label>
@@ -30,31 +55,39 @@
                 </p>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input class="custom-control-input" type="radio" name="is_store_open" id="openStoreTrue"
-                    v-model="is_store_open" :value="true" />
+                    v-model="is_store_open" :value="1" />
                   <label class="custom-control-label" for="openStoreTrue">Iya, boleh</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                   <input class="custom-control-input" type="radio" name="is_store_open" id="openStoreFalse"
-                    v-model="is_store_open" :value="false" />
-                  <label makasih class="custom-control-label" for="openStoreFalse">Enggak, makasih</label>
+                    v-model="is_store_open" :value="0" />
+                  <label class="custom-control-label" for="openStoreFalse">Enggak, makasih</label>
                 </div>
               </div>
               <div class="form-group" v-if="is_store_open">
                 <label>Nama Toko</label>
-                <input type="text" class="form-control" aria-describedby="storeHelp" />
+                <input type="text" v-model="store_name" id="store_name" name="store_name" class="form-control @error('store_name') is-invalid @enderror" aria-describedby="storeHelp" required autocomplete autofocus />
+                @error('store_name')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
               </div>
               <div class="form-group" v-if="is_store_open">
                 <label>Kategori</label>
-                <select name="category" class="form-control">
+                <select name="categories_id" class="form-control">
                   <option value="" disabled>Select Category</option>
+                  @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                  @endforeach
                 </select>
               </div>
-              <button type="submit" class="btn btn-success btn-block mt-4">
+              <button type="submit" class="btn btn-success btn-block mt-4" :disabled="this.email_unavailable">
                 Sign Up Now
               </button>
-              <button type="submit" class="btn btn-signup btn-block mt-2">
+              <a class="btn btn-signup btn-block mt-2" href="{{ route('login') }}">
                 Back to Sign In
-              </button>
+              </a>
             </form>
           </div>
         </div>
@@ -67,6 +100,8 @@
 @push('addon-script')
 <script src="/vendor/vue/vue.js"></script>
   <script src="https://unpkg.com/vue-toasted"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <script>
     Vue.use(Toasted);
 
@@ -74,21 +109,52 @@
       el: "#register",
       mounted() {
         AOS.init();
-        this.$toasted.error(
-          "Maaf, tampaknya email sudah terdaftar pada sistem kami.",
-          {
-            position: "top-center",
-            className: "rounded",
-            duration: 1000,
-          }
-        );
       },
-      data: {
-        name: "Angga Hazza Sett",
-        email: "kamujagoan@bwa.id",
-        password: "",
-        is_store_open: true,
-        store_name: "",
+      methods: {
+        checkForEmailAvailability: function(){
+            var self = this;
+            axios.get('{{ route('api-register-check') }}', {
+                params:{
+                    email: this.email
+                }
+            })
+            .then(function (response) {
+
+                if(response.data == 'Available'){
+                    self.$toasted.show(
+                        "Email anda bisa di daftarkan, silahkan lanjut!",
+                        {
+                            position: "top-center",
+                            className: "rounded",
+                            duration: 3000,
+                        }
+                    );
+                    self.email_unavailable = false;
+
+                }else{
+                    self.$toasted.error(
+                        "Maaf, tampaknya email sudah terdaftar pada sistem kami!",
+                        {
+                            position: "top-center",
+                            className: "rounded",
+                            duration: 3000,
+                        }
+                    );
+                    self.email_unavailable = true;
+                }
+                // handle success
+                console.log(response);
+            })
+        }
+      },
+      data() {
+        return {
+            name: "Angga Hazza Sett",
+            email: "kamujagoan@bwa.id",
+            is_store_open: true,
+            store_name: "",
+            email_unavailable: false,
+        }
       },
     });
   </script>
