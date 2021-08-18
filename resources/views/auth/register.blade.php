@@ -9,6 +9,7 @@
             <h2>
               Memulai untuk jual beli <br />
               dengan cara terbaru
+
             </h2>
             <form method="POST" action="{{ route('register') }}" class="mt-3">
             @csrf
