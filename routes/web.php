@@ -21,26 +21,37 @@ Route::get('/categories/{id}', 'CategoryController@detail')->name('categories-de
 Route::get('/details/{id}', 'DetailController@index')->name('details');
 Route::post('/details/{id}', 'DetailController@add')->name('details-add');
 
-Route::get('/cart', 'CartController@index')->name('cart');
-Route::delete('/cart/{id}', 'CartController@delete')->name('cart-delete');
+Route::post('/checkout/callback', 'CheckoutController@callback')->name('midtrans-callback');
+
 Route::get('/success', 'CartController@success')->name('success');
 
 Route::get('/register/success', 'Auth\RegisterController@success')->name('register-success');
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('/dashboard/products', 'DashboardProductController@index')->name('dashboard-products');
-Route::get('/dashboard/products/create', 'DashboardProductController@create')->name('dashboard-products-create');
-Route::get('/dashboard/products/{id}', 'DashboardProductController@detail')->name('dashboard-products-detail');
 
-Route::get('/dashboard/transactions', 'DashboardTransactionController@index')->name('dashboard-transactions');
-Route::get('/dashboard/transactions/{id}', 'DashboardTransactionController@detail')->name('dashboard-transactions-details');
 
-Route::get('/dashboard/settings', 'DashboardSettingController@store')->name('dashboard-settings');
-Route::get('/dashboard/account', 'DashboardSettingController@account')->name('dashboard-account');
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::get('/cart', 'CartController@index')->name('cart');
+    Route::delete('/cart/{id}', 'CartController@delete')->name('cart-delete');
+
+    Route::post('/checkout', 'CheckoutController@proccess')->name('checkout');
+
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('/dashboard/products', 'DashboardProductController@index')->name('dashboard-products');
+    Route::get('/dashboard/products/create', 'DashboardProductController@create')->name('dashboard-products-create');
+    Route::get('/dashboard/products/{id}', 'DashboardProductController@detail')->name('dashboard-products-detail');
+
+    Route::get('/dashboard/transactions', 'DashboardTransactionController@index')->name('dashboard-transactions');
+    Route::get('/dashboard/transactions/{id}', 'DashboardTransactionController@detail')->name('dashboard-transactions-details');
+
+    Route::get('/dashboard/settings', 'DashboardSettingController@store')->name('dashboard-settings');
+    Route::get('/dashboard/account', 'DashboardSettingController@account')->name('dashboard-account');
+});
 
 Route::prefix('admin') // ini untuk rout nya, jadi setiap yg manggil '/admin' di url lari kesini.
     ->namespace('Admin') // ini untuk nama folder untuk manggil controller karena ada di folder Admin.
     // ->middleware('auth', 'admin')
+    ->middleware(['auth', 'admin'])
     ->group(function () {
         Route::get('/', 'DashboardController@index')->name('admin-dashboard');
         Route::resource('category', 'CategoryController');
