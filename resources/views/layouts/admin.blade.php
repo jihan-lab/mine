@@ -89,7 +89,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto d-none d-lg-flex">
                     <li class="nav-item dropdown">
-                    <a
+                        <a
                         class="nav-link"
                         href="#"
                         id="navbarDropdown"
@@ -97,42 +97,78 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                    >
-                        <img
-                        src="/images/icon-user.png"
-                        alt=""
-                        class="rounded-circle mr-2 profile-picture"
-                        />
-                        Hi, Jihan
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/index.html"
-                        >Back to Store</a
                         >
-                        <a class="dropdown-item" href="/dashboard-account.html"
-                        >Settings</a
+                        <img
+                            src="/images/icon-user.png"
+                            alt=""
+                            class="rounded-circle mr-2 profile-picture"
+                        />
+                        Hi, {{ Auth::user()->name }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('home') }}"
+                            >Back to Store</a
+                        >
+                        <a class="dropdown-item" href="{{ route('dashboard') }}"
+                            >Dashborad Settings</a
                         >
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/">Logout</a>
-                    </div>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                        </div>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link d-inline-block mt-2" href="#">
-                        <img src="/images/icon-cart-empty.svg" alt="" />
-                    </a>
+                        <a class="nav-link d-inline-block mt-2" href="{{ route('cart') }}">
+                            @php
+                                $cart = \App\Cart::where('users_id', Auth::user()->id)->count();
+                            @endphp
+                            @if ($cart > 0)
+                                <img src="/images/icon-cart-filled.svg" alt="" />
+                                <div class="cart-badge">{{ $cart }}</div>
+                            @else
+                                <img src="/images/icon-cart-empty.svg" alt="" />
+                            @endif
+                        </a>
                     </li>
                 </ul>
                 <!-- Mobile Menu -->
                 <ul class="navbar-nav d-block d-lg-none mt-3">
                     <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        Hi, Jihan
-                    </a>
+                        <a class="nav-link" href="#">
+                        Hi, {{ Auth::user()->name }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link d-inline-block" href="#">
-                        Cart
-                    </a>
+                        <a class="nav-link d-inline-block mt-2" href="{{ route('cart') }}">
+                            @php
+                                $cart = \App\Cart::where('users_id', Auth::user()->id)->count();
+                            @endphp
+                            @if ($cart > 0)
+                                <img src="/images/icon-cart-filled.svg" alt="" />
+                                <div class="cart-badge">{{ $cart }}</div>
+                            @else
+                                <img src="/images/icon-cart-empty.svg" alt="" />
+                            @endif
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboard') }}">
+                            Dashboard Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="dropdown-item nav-link" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </li>
                 </ul>
                 </div>

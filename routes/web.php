@@ -39,7 +39,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::get('/dashboard/products', 'DashboardProductController@index')->name('dashboard-products');
     Route::get('/dashboard/products/create', 'DashboardProductController@create')->name('dashboard-products-create');
+    Route::post('/dashboard/products', 'DashboardProductController@store')->name('dashboard-products-store');
+
     Route::get('/dashboard/products/{id}', 'DashboardProductController@detail')->name('dashboard-products-detail');
+    Route::post('/dashboard/products/{id}', 'DashboardProductController@update')->name('dashboard-products-update');
+
+    Route::post('/dashboard/products/gallery/upload', 'DashboardProductController@uploadGallery')->name('dashboard-products-gallery-upload');
+    Route::get('/dashboard/products/gallery/delete/{id}', 'DashboardProductController@deleteGallery')->name('dashboard-products-gallery-delete');
 
     Route::get('/dashboard/transactions', 'DashboardTransactionController@index')->name('dashboard-transactions');
     Route::get('/dashboard/transactions/{id}', 'DashboardTransactionController@detail')->name('dashboard-transactions-details');

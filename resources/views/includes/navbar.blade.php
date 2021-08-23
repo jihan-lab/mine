@@ -51,8 +51,8 @@
                     <a class="dropdown-item" href="{{ route('home') }}"
                         >Back to Store</a
                     >
-                    <a class="dropdown-item" href="{{ route('dashboard-settings') }}"
-                        >Settings</a
+                    <a class="dropdown-item" href="{{ route('dashboard') }}"
+                        >Dashborad Settings</a
                     >
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -86,12 +86,20 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-inline-block" href="#">
-                    Cart
+                    <a class="nav-link d-inline-block mt-2" href="{{ route('cart') }}">
+                        @php
+                            $cart = \App\Cart::where('users_id', Auth::user()->id)->count();
+                        @endphp
+                        @if ($cart > 0)
+                            <img src="/images/icon-cart-filled.svg" alt="" />
+                            <div class="cart-badge">{{ $cart }}</div>
+                        @else
+                            <img src="/images/icon-cart-empty.svg" alt="" />
+                        @endif
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('dashboard-settings') }}">
+                    <a class="nav-link" href="{{ route('dashboard') }}">
                         Dashboard Settings
                     </a>
                 </li>
