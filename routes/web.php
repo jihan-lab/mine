@@ -49,9 +49,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/dashboard/transactions', 'DashboardTransactionController@index')->name('dashboard-transactions');
     Route::get('/dashboard/transactions/{id}', 'DashboardTransactionController@detail')->name('dashboard-transactions-details');
+    Route::post('/dashboard/transactions/{id}', 'DashboardTransactionController@update')->name('dashboard-transactions-update');
 
     Route::get('/dashboard/settings', 'DashboardSettingController@store')->name('dashboard-settings');
     Route::get('/dashboard/account', 'DashboardSettingController@account')->name('dashboard-account');
+    Route::post('/dashboard/account/{riderect}', 'DashboardSettingController@update')->name('dashboard-account-redirect');
 });
 
 Route::prefix('admin') // ini untuk rout nya, jadi setiap yg manggil '/admin' di url lari kesini.
